@@ -1,6 +1,6 @@
-name: "FTP Deploy"
+name: "FTP Upload"
 description: "Automate deploying websites and more with this GitHub action via FTP and FTPS"
-author: "Sam Kirkland"
+author: "Aditya Kumar"
 inputs:
   server:
     required: true
@@ -45,7 +45,7 @@ inputs:
     required: false
     description: "Timeout in milliseconds for FTP operations"
 runs:
-  using: "node16"
+  using: "node18"
   main: "dist/index.js"
 branding:
   icon: "upload-cloud"
