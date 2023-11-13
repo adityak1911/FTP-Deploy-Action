@@ -9060,7 +9060,8 @@ async function runDeployment() {
             "exclude": (0, parse_1.optionalStringArray)("exclude", core.getMultilineInput("exclude")),
             "log-level": (0, parse_1.optionalLogLevel)("log-level", core.getInput("log-level")),
             "security": (0, parse_1.optionalSecurity)("security", core.getInput("security")),
-            "timeout": (0, parse_1.optionalInt)("timeout", core.getInput("timeout"))
+            "timeout": (0, parse_1.optionalInt)("timeout", core.getInput("timeout")),
+            "disable_sync": (0, parse_1.optionalBoolean)("disable_sync", core.getInput("disable_sync"))
         };
         await (0, ftp_deploy_1.deploy)(args);
     }
