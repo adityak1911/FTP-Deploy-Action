@@ -1,4 +1,4 @@
-name: "FTP Upload"
+name: "FTP Upload From Repo"
 description: "Automate deploying websites and more with this GitHub action via FTP and FTPS"
 author: "Aditya Kumar"
 inputs:
