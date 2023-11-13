@@ -3304,6 +3304,12 @@ function deploy(args, logger, timings) {
             logger.standard(`Calculating differences between client & server`);
             logger.standard(`----------------------------------------------------------------`);
             const diffs = diffTool.getDiffs(localFiles, serverFiles);
+	    diffs.delete.filter((itemUpload) => itemUpload.type === "file").map((itemDelete) => {
+		logger.standard(`📄 Delete: ${itemDelete.name}    `);
+            });
+            diffs.delete.filter((itemUpload) => itemUpload.type === "folder").map((itemDelete) => {
+                logger.standard(`📁 Delete: ${itemDelete.name}    `);
+            });
             diffs.upload.filter((itemUpload) => itemUpload.type === "folder").map((itemUpload) => {
                 logger.standard(`📁 Create: ${itemUpload.name}`);
             });
@@ -3313,12 +3319,7 @@ function deploy(args, logger, timings) {
             diffs.replace.map((itemReplace) => {
                 logger.standard(`🔁 File replace: ${itemReplace.name}`);
             });
-            diffs.delete.filter((itemUpload) => itemUpload.type === "file").map((itemDelete) => {
-                logger.standard(`📄 Delete: ${itemDelete.name}    `);
-            });
-            diffs.delete.filter((itemUpload) => itemUpload.type === "folder").map((itemDelete) => {
-                logger.standard(`📁 Delete: ${itemDelete.name}    `);
-            });
+            
             diffs.same.map((itemSame) => {
                 if (itemSame.type === "file") {
                     logger.standard(`⚖️  File content is the same, doing nothing: ${itemSame.name}`);
