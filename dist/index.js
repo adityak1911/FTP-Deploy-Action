@@ -3667,7 +3667,16 @@ class FTPSyncProvider {
             this.logger.all(`Making changes to ${totalCount} ${(0, utilities_1.pluralize)(totalCount, "file/folder", "files/folders")} to sync server state`);
             this.logger.all(`Uploading: ${(0, pretty_bytes_1.default)(diffs.sizeUpload)} -- Deleting: ${(0, pretty_bytes_1.default)(diffs.sizeDelete)} -- Replacing: ${(0, pretty_bytes_1.default)(diffs.sizeReplace)}`);
             this.logger.all(`----------------------------------------------------------------`);
-            // create new folders
+            // delete old files
+            for (const file of diffs.delete.filter(item => item.type === "file")) {
+                yield this.removeFile(file.name);
+            }
+            // delete old folders
+            for (const file of diffs.delete.filter(item => item.type === "folder")) {
+                yield this.removeFolder(file.name);
+            }
+		
+	    // create new folders
             for (const file of diffs.upload.filter(item => item.type === "folder")) {
                 yield this.createFolder(file.name);
             }
@@ -3680,14 +3689,7 @@ class FTPSyncProvider {
                 // note: FTP will replace old files with new files. We run replacements after uploads to limit downtime
                 yield this.uploadFile(file.name, "replace");
             }
-            // delete old files
-            for (const file of diffs.delete.filter(item => item.type === "file")) {
-                yield this.removeFile(file.name);
-            }
-            // delete old folders
-            for (const file of diffs.delete.filter(item => item.type === "folder")) {
-                yield this.removeFolder(file.name);
-            }
+            
             this.logger.all(`----------------------------------------------------------------`);
             this.logger.all(`🎉 Sync complete. Saving current server state to "${this.serverPath + this.stateName}"`);
             if (this.dryRun === false) {
